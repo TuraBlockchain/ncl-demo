@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="header_title">Tagfusion Loan on Tura</title>
+    <style>
+        /* CSS Variables for Consistent Theming */
+        :root {
+            --background-color: #1a1a1a;
+            --primary-color: #1fc7d4;
+            --secondary-color: #333;
+            --text-color: #f0f0f0;
+            --accent-color: #e5e5e5;
+            --error-color: #ff6b6b;
+            --success-color: #28a745;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Body Styling */
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styling */
+        header {
+            background: linear-gradient(135deg, #1fc7d4 0%, #0f2027 100%);
+            color: var(--text-color);
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 4px solid var(--primary-color);
+        }
+        
+        header h1 {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        header .intro {
+            font-size: 1.2em;
+            color: var(--accent-color);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        /* Navigation Styling */
+        nav {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding: 15px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: var(--text-color);
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1.1em;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Language Selector Styling */
+        .language-selector {
+            margin-left: 30px;
+        }
+        
+        .language-selector select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-size: 1em;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .language-selector select:focus {
+            outline: none;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+        
+        /* Container Styling */
+        .container {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        
+        /* Button Styling */
+        .role-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .role-button {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            color: var(--background-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-width: 150px;
+        }
+        
+        .role-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%) rotate(45deg) scale(0);
+            border-radius: 50%;
+        }
+        
+        .role-button:hover::after {
+            transform: translate(-50%, -50%) rotate(45deg) scale(1);
+            opacity: 0;
+        }
+        
+        .role-button:hover {
+            background-color: #17a2b8;
+            transform: translateY(-5px);
+        }
+        
+        /* Profile Setup Sections Styling */
+        .profile-setup {
+            display: none;
+            margin-top: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 30px;
+            background-color: var(--secondary-color);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .profile-setup.active {
+            display: block;
+        }
+        
+        .profile-setup h3 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1.8em;
+            letter-spacing: 1px;
+        }
+        
+        .profile-setup form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+        }
+        
+        .profile-setup label {
+            position: relative;
+            font-size: 1em;
+            color: var(--accent-color);
+        }
+        
+        /* Floating Label Styles */
+        .profile-setup .input-group {
+            position: relative;
+        }
+        
+        .profile-setup input,
+        .profile-setup textarea,
+        .profile-setup select {
+            background: none;
+            border: none;
+            border-bottom: 2px solid var(--accent-color);
+            padding: 10px 5px;
+            font-size: 1em;
+            color: var(--text-color);
+            transition: border-color 0.3s ease;
+            outline: none;
+            width: 100%;
+        }
+        
+        .profile-setup input:focus,
+        .profile-setup textarea:focus,
+        .profile-setup select:focus {
+            border-bottom-color: var(--primary-color);
+        }
+        
+        /* Floating Label Effect */
+        .profile-setup input:focus + label,
+        .profile-setup input:not(:placeholder-shown) + label,
+        .profile-setup textarea:focus + label,
+        .profile-setup textarea:not(:placeholder-shown) + label,
+        .profile-setup select:focus + label,
+        .profile-setup select:not([value=""]) + label {
+            top: -20px;
+            font-size: 0.8em;
+            color: var(--primary-color);
+        }
+        
+        .profile-setup label {
+            position: absolute;
+            top: 10px;
+            left: 5px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            color: var(--accent-color);
+        }
+        
+        /* Submit Button Styling */
+        .profile-setup button {
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .profile-setup button:hover {
+            background-color: #17a2b8;
+            transform: translateY(-3px);
+        }
+        
+        /* Management Page Styling */
+        .management-page {
+            display: none;
+            margin-top: 50px;
+        }
+        
+        .management-page.active {
+            display: block;
+        }
+        
+        .management-page h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+            font-size: 2em;
+            letter-spacing: 1px;
+        }
+        
+        .management-section {
+            margin-bottom: 50px;
+        }
+        
+        .management-section h3 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        
+        .sample-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .sample-item {
+            background-color: var(--secondary-color);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .sample-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+        }
+        
+        .sample-item h4 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1.3em;
+            letter-spacing: 0.5px;
+        }
+        
+        .sample-item p {
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            color: var(--accent-color);
+        }
+        
+        .sample-item button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.9em;
+        }
+        
+        .sample-item button:hover {
+            background-color: #17a2b8;
+        }
+        
+        /* Repayment Schedule Table */
+        .repayment-schedule {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .repayment-schedule table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .repayment-schedule th,
+        .repayment-schedule td {
+            border: 1px solid var(--accent-color);
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .repayment-schedule th {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+        }
+        
+        .repayment-schedule td {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Footer Styling */
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--accent-color);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9em;
+        }
+        
+        /* Notification Styling */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: var(--background-color);
+            padding: 15px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        
+        .notification.error {
+            background-color: var(--error-color);
+        }
+        
+        @keyframes fadein {
+            from { opacity: 0; right: 0; }
+            to { opacity: 1; right: 20px; }
+        }
+        
+        @keyframes fadeout {
+            from { opacity: 1; right: 20px; }
+            to { opacity: 0; right: 0; }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+        
+            .language-selector {
+                margin-left: 0;
+            }
+        
+            .role-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .role-button {
+                width: 80%;
+                max-width: 300px;
+            }
+        
+            .management-section h3 {
+                font-size: 1.3em;
+            }
+        
+            .sample-item h4 {
+                font-size: 1.1em;
+            }
+        
+            .sample-item p {
+                font-size: 0.9em;
+            }
+        
+            header h1 {
+                font-size: 2.5em;
+            }
+        
+            header .intro {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 data-i18n="header_title">Tagfusion Loan on Tura</h1>
+        <p class="intro" data-i18n="intro_line">1st ever non collateral loan on chain</p>
+    </header>
+
+    <nav>
+        <a href="#home" data-i18n="nav_home">Home</a>
+        <a href="#system-overview" data-i18n="nav_system_overview">System Overview</a>
+        <div class="language-selector">
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="zh">中文 (简体)</option>
+            </select>
+        </div>
+    </nav>
+
+    <div class="container" id="home">
+        <h2 data-i18n="welcome_title">Welcome to the Loan Management System</h2>
+        <p data-i18n="welcome_message">Please select your role to proceed:</p>
+
+        <div class="role-buttons">
+            <button class="role-button" data-role="borrower" data-i18n="button_borrow">Borrow</button>
+            <button class="role-button" data-role="lender" data-i18n="button_lend">Lend</button>
+            <button class="role-button" data-role="insurer" data-i18n="button_insurer">Insurer</button>
+        </div>
+
+        <!-- Profile Setup Sections -->
+
+        <!-- Borrower Profile Setup -->
+        <div class="profile-setup" id="borrower-setup">
+            <h3 data-i18n="borrower_profile_title">Borrower Profile Setup</h3>
+            <form id="borrower-form">
+                <div class="input-group">
+                    <input type="text" id="borrower-name" name="borrower-name" required placeholder=" " />
+                    <label for="borrower-name" data-i18n="label_full_name">Full Name:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="borrower-email" name="borrower-email" required placeholder=" " />
+                    <label for="borrower-email" data-i18n="label_email">Email:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="borrower-id" name="borrower-id" required placeholder=" " />
+                    <label for="borrower-id" data-i18n="label_gov_id">Government ID (Passport/Driver's License):</label>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="borrower-address" name="borrower-address" rows="3" required placeholder=" "></textarea>
+                    <label for="borrower-address" data-i18n="label_address">Address:</label>
+                </div>
+
+                <button type="submit" data-i18n="button_submit_profile">Submit Profile</button>
+            </form>
+        </div>
+
+        <!-- Lender Profile Setup -->
+        <div class="profile-setup" id="lender-setup">
+            <h3 data-i18n="lender_profile_title">Lender Profile Setup</h3>
+            <form id="lender-form">
+                <div class="input-group">
+                    <input type="text" id="lender-name" name="lender-name" required placeholder=" " />
+                    <label for="lender-name" data-i18n="label_full_name">Full Name:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="lender-email" name="lender-email" required placeholder=" " />
+                    <label for="lender-email" data-i18n="label_email">Email:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="lender-bank" name="lender-bank" required placeholder=" " />
+                    <label for="lender-bank" data-i18n="label_bank_details">Bank Account Details:</label>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="lender-address" name="lender-address" rows="3" required placeholder=" "></textarea>
+                    <label for="lender-address" data-i18n="label_address">Address:</label>
+                </div>
+
+                <button type="submit" data-i18n="button_submit_profile">Submit Profile</button>
+            </form>
+        </div>
+
+        <!-- Insurer Profile Setup -->
+        <div class="profile-setup" id="insurer-setup">
+            <h3 data-i18n="insurer_profile_title">Insurer Profile Setup</h3>
+            <form id="insurer-form">
+                <div class="input-group">
+                    <input type="text" id="insurer-name" name="insurer-name" required placeholder=" " />
+                    <label for="insurer-name" data-i18n="label_full_name">Full Name:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="insurer-email" name="insurer-email" required placeholder=" " />
+                    <label for="insurer-email" data-i18n="label_email">Email:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="insurer-company" name="insurer-company" required placeholder=" " />
+                    <label for="insurer-company" data-i18n="label_company_name">Company Name:</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="insurer-twitter" name="insurer-twitter" required placeholder=" " />
+                    <label for="insurer-twitter" data-i18n="label_twitter">Twitter Account:</label>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="insurer-address" name="insurer-address" rows="3" required placeholder=" "></textarea>
+                    <label for="insurer-address" data-i18n="label_address">Address:</label>
+                </div>
+
+                <button type="submit" data-i18n="button_submit_profile">Submit Profile</button>
+            </form>
+        </div>
+
+        <!-- Management Page -->
+        <div class="management-page" id="management-page">
+            <h2 data-i18n="management_dashboard">Management Dashboard</h2>
+
+            <!-- Borrower Management -->
+            <div class="management-section" id="borrower-management">
+                <h3 data-i18n="borrower_applied_insurers">Applied Insurers</h3>
+                <ul class="sample-list" id="borrower-applied-insurers">
+                    <!-- Applied insurers will be populated here -->
+                </ul>
+                <div class="insurer-offers" id="borrower-offers">
+                    <h3 data-i18n="borrower_received_offers">Received Offers</h3>
+                    <ul class="sample-list" id="borrower-received-offers">
+                        <!-- Offers will be populated here -->
+                    </ul>
+                </div>
+                <div class="repayment-schedule" id="borrower-repayment-schedule">
+                    <h3 data-i18n="borrower_repayment_schedule">Repayment Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="table_month">Month</th>
+                                <th data-i18n="table_payment_amount">Payment Amount (USDT)</th>
+                                <th data-i18n="table_remaining_balance">Remaining Balance (USDT)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="repayment-table-body">
+                            <!-- Repayment schedule will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Insurer Management -->
+            <div class="management-section" id="insurer-management">
+                <h3 data-i18n="insurer_applications">Borrower Applications</h3>
+                <ul class="sample-list" id="insurer-applications">
+                    <!-- Borrower applications will be populated here -->
+                </ul>
+
+                <h3 data-i18n="insurer_offers">Your Offers</h3>
+                <ul class="sample-list" id="insurer-offers-list">
+                    <!-- Insurer's offers will be populated here -->
+                </ul>
+            </div>
+
+            <!-- Lender Management -->
+            <div class="management-section" id="lender-management">
+                <h3 data-i18n="lender_contracts">Available Loans to Invest</h3>
+                <ul class="sample-list" id="available-loans">
+                    <!-- Loans will be populated here -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- System Overview Section -->
+        <div class="container system-overview" id="system-overview">
+            <h2 data-i18n="system_overview_title">Loan Management System Overview</h2>
+            <p data-i18n="system_overview_intro">To implement this system, we need to address several components and how they work together. Below is a detailed outline of the steps and considerations involved in the overall implementation, broken into different sections:</p>
+
+            <section>
+                <h3 data-i18n="section_user_profile_management">1. User Profile Management (Borrower)</h3>
+
+                <h4 data-i18n="subsection_profile_updates">Profile Updates</h4>
+                <ul>
+                    <li data-i18n="li_profile_update_1"><strong>First Update:</strong> When a borrower updates their profile, the new data will replace the existing JSON file.</li>
+                    <li data-i18n="li_profile_update_2"><strong>Storing Old Profile:</strong> The old JSON file is kept in storage to ensure traceability, especially in cases where the borrower defaults or the loan becomes relevant to blacklisting.</li>
+                    <li data-i18n="li_profile_update_3"><strong>Versioning:</strong> Each update should have a version number or timestamp for tracking, so it's clear which version is the most recent and which could be subject to blacklisting.</li>
+                    <li data-i18n="li_profile_update_4"><strong>Data Storage:</strong> The profiles (JSON files) should be stored off-chain, but referenced on-chain with an immutable record linking to the latest file. This can be done using a decentralized storage system like IPFS or Arweave to ensure the data is securely stored and timestamped.</li>
+                </ul>
+
+                <h4 data-i18n="subsection_encryption">Encryption</h4>
+                <ul>
+                    <li data-i18n="li_encryption_1"><strong>Private Data:</strong> The profile should be encrypted to ensure only the borrower and the insurer can decrypt and view the sensitive data (passport, ID, etc.).</li>
+                    <li data-i18n="li_encryption_2"><strong>Access Control:</strong> The contract ensures that only authorized parties (the borrower and the insurer) can access the data. When the data is updated, both parties should be notified of the update.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-i18n="section_insurer_interaction">2. Insurer Interaction</h3>
+
+                <h4 data-i18n="subsection_profile_verification">Profile Verification</h4>
+                <ul>
+                    <li data-i18n="li_profile_verification_1"><strong>Due Diligence:</strong> After receiving the borrower’s profile and request, the insurer is responsible for performing due diligence, verifying the borrower’s identity, and assessing the risk.</li>
+                    <li data-i18n="li_profile_verification_2"><strong>Profile Viewing:</strong> The insurer can interact with the platform to view the borrower’s encrypted profile and choose to either contact the borrower or approve the loan offer.</li>
+                    <li data-i18n="li_profile_verification_3"><strong>Public Profile:</strong> The insurer must set up their public profile, which could include contact information, social networks, or blockchain addresses (BTC, ETH, TRX). This builds trust with borrowers and stakers.</li>
+                </ul>
+
+                <h4 data-i18n="subsection_loan_offer">Loan Offer</h4>
+                <ul>
+                    <li data-i18n="li_loan_offer_1">The insurer submits a loan offer to the borrower (amount, interest rate, terms, etc.), which is then stored on-chain as a proposal.</li>
+                    <li data-i18n="li_loan_offer_2"><strong>Acceptance:</strong> Once the borrower accepts the offer, the deal’s status will be tracked on the website. This includes the amount, terms, and any relevant tags (e.g., Tura tokens, interest rates).</li>
+                </ul>
+
+                <h4 data-i18n="subsection_blacklisting_mechanism">Blacklisting Mechanism</h4>
+                <ul>
+                    <li data-i18n="li_blacklisting_1">The insurer can interact with the contract at any point to check whether the loan is in default or has been marked as "over-dual" (meaning that repayment conditions have not been met).</li>
+                    <li data-i18n="li_blacklisting_2"><strong>Triggering Blacklisting:</strong> If the insurer determines that the borrower has defaulted, they can trigger the blacklisting process via a contract function.</li>
+                    <li data-i18n="li_blacklisting_3"><strong>Blacklisting:</strong> The borrower’s previous profile (the one linked to the loan) could be exposed to a blacklist that is accessible to anyone who has access to the platform, thus warning other participants (borrowers, insurers, stakers) about the risk.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-i18n="section_staker_interaction">3. Staker Interaction</h3>
+
+                <h4 data-i18n="subsection_viewing_deals">Viewing Deals</h4>
+                <ul>
+                    <li data-i18n="li_viewing_deals_1">Stakers are able to see all the loan deals that are backed by insurers. This includes details like loan amount, interest rate, and terms.</li>
+                    <li data-i18n="li_viewing_deals_2"><strong>Full Stake:</strong> Stakers can decide to stake the full amount of the loan, which is then transferred to the borrower’s address once the deal is confirmed.</li>
+                    <li data-i18n="li_viewing_deals_3"><strong>Deal ID:</strong> Once the staker has completed their stake, the deal’s unique ID is sent to the borrower, insurer, and staker for tracking.</li>
+                </ul>
+
+                <h4 data-i18n="subsection_payment_handling">Payment Handling</h4>
+                <ul>
+                    <li data-i18n="li_payment_handling_1"><strong>Borrower Payments:</strong> The borrower is expected to make monthly payments. They can pay from any wallet address but must include the loan ID in the payment transaction. This ID will help the smart contract correctly track and distribute the funds.</li>
+                    <li data-i18n="li_payment_handling_2"><strong>Distribution:</strong> The smart contract will handle the distribution of payments, ensuring that the funds are correctly allocated between the insurer and the stakers according to their stakes in the loan.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-i18n="section_smart_contract_design">4. Smart Contract Design</h3>
+
+                <h4 data-i18n="subsection_profile_data_management">Profile Data Management</h4>
+                <ul>
+                    <li data-i18n="li_profile_data_management_1">The smart contract should have functions that allow storing metadata such as the borrower’s profile, loan details, and version history of the profile.</li>
+                    <li data-i18n="li_profile_data_management_2"><strong>Secure Profile Handling:</strong> To prevent tampering, the contract should interact with an off-chain storage provider (like IPFS), which stores the encrypted JSON profiles. The contract should store just the hash of the profile data to ensure that it hasn’t been altered.</li>
+                </ul>
+
+                <h4 data-i18n="subsection_loan_contract">Loan Contract</h4>
+                <ul>
+                    <li data-i18n="li_loan_contract_1"><strong>State Management:</strong> The contract must track the state of the loan, whether it’s pending, active, or completed.</li>
+                    <li data-i18n="li_loan_contract_2"><strong>Offer Management:</strong> It should allow insurers to submit loan offers and borrowers to accept them. Once accepted, the contract can initiate the transaction by transferring the funds to the borrower’s address.</li>
+                    <li data-i18n="li_loan_contract_3"><strong>Payment Tracking:</strong> The contract needs to track loan repayments. Each payment should include the deal ID and the payment amount, ensuring that it’s correctly attributed to the borrower’s loan.</li>
+                    <li data-i18n="li_loan_contract_4"><strong>Blacklisting Trigger:</strong> If the insurer detects a default, they should be able to interact with the contract to trigger the blacklisting action, marking the borrower’s profile as part of the blacklist.</li>
+                </ul>
+
+                <h4 data-i18n="subsection_security">Security</h4>
+                <ul>
+                    <li data-i18n="li_security_1"><strong>Access Control:</strong> Only authorized users (borrowers, insurers, and stakers) should have access to certain functions, such as viewing sensitive data or interacting with the smart contract for payments or blacklisting.</li>
+                    <li data-i18n="li_security_2"><strong>Audits:</strong> To prevent any vulnerabilities, the smart contract should be thoroughly audited before launch.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3 data-i18n="section_platform_interaction">5. Platform Interaction</h3>
+
+                <h4 data-i18n="subsection_ui_ux">UI/UX</h4>
+                <ul>
+                    <li data-i18n="li_ui_ux_1">The website needs to provide easy access for users to interact with the platform. Borrowers should be able to easily update their profiles, apply to insurers, view offers, and manage their loans. Insurers should be able to interact with the platform to review profiles, approve or reject applications, make offers, and track deals. Stakers should be able to review loan deals and invest funds.</li>
+                    <li data-i18n="li_ui_ux_2"><strong>Notifications:</strong> Users should be notified when there are updates to profiles, loan offers, applications, or repayments. A real-time notification system can be integrated with the platform.</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <h3 data-i18n="implementation_summary_title">Implementation Summary:</h3>
+            <ol>
+                <li data-i18n="li_implementation_1"><strong>Profile Updates:</strong> Borrowers can update their profiles, with versioning, while keeping old profiles for potential blacklisting.</li>
+                <li data-i18n="li_implementation_2"><strong>Loan Offers:</strong> Insurers submit loan offers, borrowers can accept or reject them, and create counter offers. The deals are tracked on the platform.</li>
+                <li data-i18n="li_implementation_3"><strong>Staking:</strong> Stakers can stake funds for deals, with transparency and deal tracking via deal IDs.</li>
+                <li data-i18n="li_implementation_4"><strong>Payments:</strong> Borrowers make monthly payments, tracked and distributed by the contract.</li>
+                <li data-i18n="li_implementation_5"><strong>Blacklisting:</strong> Insurers can trigger blacklisting based on loan default, with the borrower’s information exposed on a public blacklist.</li>
+                <li data-i18n="li_implementation_6"><strong>Smart Contract:</strong> A robust contract manages the entire process (profile management, loan tracking, payments, blacklisting).</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p data-i18n="footer_text">&copy; 2024 Tagfusion Loan on Tura. All rights reserved.</p>
+        </footer>
+
+        <!-- Notification Element -->
+        <div class="notification" id="notification"></div>
+
+        <!-- JavaScript for Language Handling, Role Handling, Form Submissions, and Dynamic Content -->
+        <script>
+            // Translation Data
+            const translations = {
+                en: {
+                    header_title: "Tagfusion Loan on Tura",
+                    intro_line: "1st ever non collateral loan on chain",
+                    nav_home: "Home",
+                    nav_system_overview: "System Overview",
+                    welcome_title: "Welcome to the Loan Management System",
+                    welcome_message: "Please select your role to proceed:",
+                    button_borrow: "Borrow",
+                    button_lend: "Lend",
+                    button_insurer: "Insurer",
+                    borrower_profile_title: "Borrower Profile Setup",
+                    lender_profile_title: "Lender Profile Setup",
+                    insurer_profile_title: "Insurer Profile Setup",
+                    label_full_name: "Full Name:",
+                    label_email: "Email:",
+                    label_gov_id: "Government ID (Passport/Driver's License):",
+                    label_bank_details: "Bank Account Details:",
+                    label_company_name: "Company Name:",
+                    label_twitter: "Twitter Account:",
+                    label_address: "Address:",
+                    label_credit_score: "Credit Score:",
+                    button_submit_profile: "Submit Profile",
+                    management_dashboard: "Management Dashboard",
+                    borrower_applied_insurers: "Applied Insurers",
+                    borrower_received_offers: "Received Offers",
+                    borrower_repayment_schedule: "Repayment Schedule",
+                    table_month: "Month",
+                    table_payment_amount: "Payment Amount (USDT)",
+                    table_remaining_balance: "Remaining Balance (USDT)",
+                    borrower_received_offers_none: "No offers received yet.",
+                    borrower_received_offers_accept: "Accept Offer",
+                    borrower_received_offers_reject: "Reject Offer",
+                    borrower_received_offers_reject_confirm: "Are you sure you want to reject this offer?",
+                    insurer_applications: "Borrower Applications",
+                    insurer_offers: "Your Offers",
+                    lender_contracts: "Available Loans to Invest",
+                    lender_invest: "Invest",
+                    invest_form_title: "Invest in Loan Offer",
+                    label_invest_amount: "Investment Amount (USDT):",
+                    button_submit_investment: "Invest",
+                    button_create_offer: "Create New Offer",
+                    create_offer_title: "Create New Loan Offer",
+                    label_offer_amount: "Loan Amount (USDT):",
+                    label_offer_term: "Loan Term (Months):",
+                    select_offer_term: "Select Term",
+                    term_6_months: "6 Months",
+                    term_12_months: "12 Months",
+                    label_offer_interest: "Annual Interest Rate (%):",
+                    label_offer_repayment: "Repayment Type:",
+                    select_repayment_type: "Select Repayment Type",
+                    repayment_installment: "Installment",
+                    repayment_lump_sum: "Lump Sum",
+                    button_submit_offer: "Submit Offer",
+                    lender_contracts_available: "Available Loans to Invest",
+                    button_apply: "Apply",
+                    button_invest: "Invest",
+                    invest_form_title: "Invest in Loan Offer",
+                    label_invest_amount: "Investment Amount (USDT):",
+                    button_submit_investment: "Invest",
+                    create_offer_success: "Loan offer created successfully!",
+                    apply_success_borrower: "Successfully applied to insurers and awaiting offers!",
+                    apply_success_insurer: "Successfully created the loan offer!",
+                    reject_success_insurer: "Offer rejected successfully!",
+                    accept_success_borrower: "Offer accepted successfully!",
+                    label_credit_score_display: "Credit Score: ",
+                    system_overview_title: "Loan Management System Overview",
+                    system_overview_intro: "To implement this system, we need to address several components and how they work together. Below is a detailed outline of the steps and considerations involved in the overall implementation, broken into different sections:",
+                    section_user_profile_management: "1. User Profile Management (Borrower)",
+                    subsection_profile_updates: "Profile Updates",
+                    li_profile_update_1: "<strong>First Update:</strong> When a borrower updates their profile, the new data will replace the existing JSON file.",
+                    li_profile_update_2: "<strong>Storing Old Profile:</strong> The old JSON file is kept in storage to ensure traceability, especially in cases where the borrower defaults or the loan becomes relevant to blacklisting.",
+                    li_profile_update_3: "<strong>Versioning:</strong> Each update should have a version number or timestamp for tracking, so it's clear which version is the most recent and which could be subject to blacklisting.",
+                    li_profile_update_4: "<strong>Data Storage:</strong> The profiles (JSON files) should be stored off-chain, but referenced on-chain with an immutable record linking to the latest file. This can be done using a decentralized storage system like IPFS or Arweave to ensure the data is securely stored and timestamped.",
+                    subsection_encryption: "Encryption",
+                    li_encryption_1: "<strong>Private Data:</strong> The profile should be encrypted to ensure only the borrower and the insurer can decrypt and view the sensitive data (passport, ID, etc.).",
+                    li_encryption_2: "<strong>Access Control:</strong> The contract ensures that only authorized parties (the borrower and the insurer) can access the data. When the data is updated, both parties should be notified of the update.",
+                    section_insurer_interaction: "2. Insurer Interaction",
+                    subsection_profile_verification: "Profile Verification",
+                    li_profile_verification_1: "<strong>Due Diligence:</strong> After receiving the borrower’s profile and request, the insurer is responsible for performing due diligence, verifying the borrower’s identity, and assessing the risk.",
+                    li_profile_verification_2: "<strong>Profile Viewing:</strong> The insurer can interact with the platform to view the borrower’s encrypted profile and choose to either contact the borrower or approve the loan offer.",
+                    li_profile_verification_3: "<strong>Public Profile:</strong> The insurer must set up their public profile, which could include contact information, social networks, or blockchain addresses (BTC, ETH, TRX). This builds trust with borrowers and stakers.",
+                    subsection_loan_offer: "Loan Offer",
+                    li_loan_offer_1: "The insurer submits a loan offer to the borrower (amount, interest rate, terms, etc.), which is then stored on-chain as a proposal.",
+                    li_loan_offer_2: "<strong>Acceptance:</strong> Once the borrower accepts the offer, the deal’s status will be tracked on the website. This includes the amount, terms, and any relevant tags (e.g., Tura tokens, interest rates).",
+                    subsection_blacklisting_mechanism: "Blacklisting Mechanism",
+                    li_blacklisting_1: "The insurer can interact with the contract at any point to check whether the loan is in default or has been marked as \"over-dual\" (meaning that repayment conditions have not been met).",
+                    li_blacklisting_2: "<strong>Triggering Blacklisting:</strong> If the insurer determines that the borrower has defaulted, they can trigger the blacklisting process via a contract function.",
+                    li_blacklisting_3: "<strong>Blacklisting:</strong> The borrower’s previous profile (the one linked to the loan) could be exposed to a blacklist that is accessible to anyone who has access to the platform, thus warning other participants (borrowers, insurers, stakers) about the risk.",
+                    section_staker_interaction: "3. Staker Interaction",
+                    subsection_viewing_deals: "Viewing Deals",
+                    li_viewing_deals_1: "Stakers are able to see all the loan deals that are backed by insurers. This includes details like loan amount, interest rate, and terms.",
+                    li_viewing_deals_2: "<strong>Full Stake:</strong> Stakers can decide to stake the full amount of the loan, which is then transferred to the borrower’s address once the deal is confirmed.",
+                    li_viewing_deals_3: "<strong>Deal ID:</strong> Once the staker has completed their stake, the deal’s unique ID is sent to the borrower, insurer, and staker for tracking.",
+                    subsection_payment_handling: "Payment Handling",
+                    li_payment_handling_1: "<strong>Borrower Payments:</strong> The borrower is expected to make monthly payments. They can pay from any wallet address but must include the loan ID in the payment transaction. This ID will help the smart contract correctly track and distribute the funds.",
+                    li_payment_handling_2: "<strong>Distribution:</strong> The smart contract will handle the distribution of payments, ensuring that the funds are correctly allocated between the insurer and the stakers according to their stakes in the loan.",
+                    section_smart_contract_design: "4. Smart Contract Design",
+                    subsection_profile_data_management: "Profile Data Management",
+                    li_profile_data_management_1: "The smart contract should have functions that allow storing metadata such as the borrower’s profile, loan details, and version history of the profile.",
+                    li_profile_data_management_2: "<strong>Secure Profile Handling:</strong> To prevent tampering, the contract should interact with an off-chain storage provider (like IPFS), which stores the encrypted JSON profiles. The contract should store just the hash of the profile data to ensure that it hasn’t been altered.",
+                    subsection_loan_contract: "Loan Contract",
+                    li_loan_contract_1: "<strong>State Management:</strong> The contract must track the state of the loan, whether it’s pending, active, or completed.",
+                    li_loan_contract_2: "<strong>Offer Management:</strong> It should allow insurers to submit loan offers and borrowers to accept them. Once accepted, the contract can initiate the transaction by transferring the funds to the borrower’s address.",
+                    li_loan_contract_3: "<strong>Payment Tracking:</strong> The contract needs to track loan repayments. Each payment should include the deal ID and the payment amount, ensuring that it’s correctly attributed to the borrower’s loan.",
+                    li_loan_contract_4: "<strong>Blacklisting Trigger:</strong> If the insurer detects a default, they should be able to interact with the contract to trigger the blacklisting action, marking the borrower’s profile as part of the blacklist.",
+                    subsection_security: "Security",
+                    li_security_1: "<strong>Access Control:</strong> Only authorized users (borrowers, insurers, and stakers) should have access to certain functions, such as viewing sensitive data or interacting with the smart contract for payments or blacklisting.",
+                    li_security_2: "<strong>Audits:</strong> To prevent any vulnerabilities, the smart contract should be thoroughly audited before launch.",
+                    section_platform_interaction: "5. Platform Interaction",
+                    subsection_ui_ux: "UI/UX",
+                    li_ui_ux_1: "The website needs to provide easy access for users to interact with the platform. Borrowers should be able to easily update their profiles, apply to insurers, view offers, and manage their loans. Insurers should be able to interact with the platform to review profiles, approve or reject applications, make offers, and track deals. Stakers should be able to review loan deals and invest funds.",
+                    li_ui_ux_2: "<strong>Notifications:</strong> Users should be notified when there are updates to profiles, loan offers, applications, or repayments. A real-time notification system can be integrated with the platform.",
+                    implementation_summary_title: "Implementation Summary:",
+                    li_implementation_1: "<strong>Profile Updates:</strong> Borrowers can update their profiles, with versioning, while keeping old profiles for potential blacklisting.",
+                    li_implementation_2: "<strong>Loan Offers:</strong> Insurers submit loan offers, borrowers can accept or reject them, and create counter offers. The deals are tracked on the platform.",
+                    li_implementation_3: "<strong>Staking:</strong> Stakers can stake funds for deals, with transparency and deal tracking via deal IDs.",
+                    li_implementation_4: "<strong>Payments:</strong> Borrowers make monthly payments, tracked and distributed by the contract.",
+                    li_implementation_5: "<strong>Blacklisting:</strong> Insurers can trigger blacklisting based on loan default, with the borrower’s information exposed on a public blacklist.",
+                    li_implementation_6: "<strong>Smart Contract:</strong> A robust contract manages the entire process (profile management, loan tracking, payments, blacklisting).",
+                    footer_text: "&copy; 2024 Tagfusion Loan on Tura. All rights reserved.",
+                },
+                zh: {
+                    header_title: "Tagfusion Loan on Tura",
+                    intro_line: "链上首个无抵押贷款",
+                    nav_home: "主页",
+                    nav_system_overview: "系统概述",
+                    welcome_title: "欢迎来到贷款管理系统",
+                    welcome_message: "请选择您的角色以继续：",
+                    button_borrow: "借款",
+                    button_lend: "出借",
+                    button_insurer: "保险",
+                    borrower_profile_title: "借款人资料设置",
+                    lender_profile_title: "出借人资料设置",
+                    insurer_profile_title: "保险人资料设置",
+                    label_full_name: "全名：",
+                    label_email: "电子邮件：",
+                    label_gov_id: "政府身份证（护照/驾照）：",
+                    label_bank_details: "银行账户详情：",
+                    label_company_name: "公司名称：",
+                    label_twitter: "Twitter账户：",
+                    label_address: "地址：",
+                    label_credit_score: "信用评分：",
+                    button_submit_profile: "提交资料",
+                    management_dashboard: "管理仪表板",
+                    borrower_applied_insurers: "已申请的保险人",
+                    borrower_received_offers: "收到的报价",
+                    borrower_repayment_schedule: "还款计划",
+                    table_month: "月份",
+                    table_payment_amount: "还款金额（USDT）",
+                    table_remaining_balance: "剩余余额（USDT）",
+                    borrower_received_offers_none: "尚未收到任何报价。",
+                    borrower_received_offers_accept: "接受报价",
+                    borrower_received_offers_reject: "拒绝报价",
+                    borrower_received_offers_reject_confirm: "您确定要拒绝此报价吗？",
+                    insurer_applications: "借款人申请",
+                    insurer_offers: "您的报价",
+                    lender_contracts: "可投资的贷款",
+                    lender_invest: "投资",
+                    invest_form_title: "投资贷款报价",
+                    label_invest_amount: "投资金额（USDT）：",
+                    button_submit_investment: "投资",
+                    button_create_offer: "创建新报价",
+                    create_offer_title: "创建新贷款报价",
+                    label_offer_amount: "贷款金额（USDT）：",
+                    label_offer_term: "贷款期限（月）：",
+                    select_offer_term: "选择期限",
+                    term_6_months: "6个月",
+                    term_12_months: "12个月",
+                    label_offer_interest: "年利率（%）：",
+                    label_offer_repayment: "还款类型：",
+                    select_repayment_type: "选择还款类型",
+                    repayment_installment: "分期还款",
+                    repayment_lump_sum: "一次性还款",
+                    button_submit_offer: "提交报价",
+                    lender_contracts_available: "可投资的贷款",
+                    button_apply: "申请",
+                    button_invest: "投资",
+                    invest_form_title: "投资贷款报价",
+                    label_invest_amount: "投资金额（USDT）：",
+                    button_submit_investment: "投资",
+                    create_offer_success: "贷款报价创建成功！",
+                    apply_success_borrower: "成功申请给保险人，等待报价！",
+                    apply_success_insurer: "成功创建贷款报价！",
+                    reject_success_insurer: "报价拒绝成功！",
+                    accept_success_borrower: "报价接受成功！",
+                    label_credit_score_display: "信用评分：",
+                    system_overview_title: "贷款管理系统概述",
+                    system_overview_intro: "为了实现这个系统，我们需要解决几个组件以及它们如何协同工作。以下是整体实施过程中涉及的步骤和考虑因素的详细大纲，分为不同的部分：",
+                    section_user_profile_management: "1. 用户资料管理（借款人）",
+                    subsection_profile_updates: "资料更新",
+                    li_profile_update_1: "<strong>首次更新：</strong> 当借款人更新他们的资料时，新数据将替换现有的JSON文件。",
+                    li_profile_update_2: "<strong>存储旧资料：</strong> 旧的JSON文件会保存在存储中，以确保可追溯性，特别是在借款人违约或贷款与黑名单相关的情况下。",
+                    li_profile_update_3: "<strong>版本控制：</strong> 每次更新都应有版本号或时间戳以供跟踪，这样可以清楚地知道哪个版本是最新的，哪个版本可能会被列入黑名单。",
+                    li_profile_update_4: "<strong>数据存储：</strong> 资料（JSON文件）应存储在链下，但在链上引用一个不可变的记录，链接到最新的文件。这可以通过使用像IPFS或Arweave这样的去中心化存储系统来实现，以确保数据被安全存储和时间戳标记。",
+                    subsection_encryption: "加密",
+                    li_encryption_1: "<strong>私人数据：</strong> 资料应被加密，以确保只有借款人和保险人可以解密并查看敏感数据（护照、身份证等）。",
+                    li_encryption_2: "<strong>访问控制：</strong> 合约确保只有授权方（借款人和保险人）可以访问资料。资料更新时，应通知双方更新。",
+                    section_insurer_interaction: "2. 保险人互动",
+                    subsection_profile_verification: "资料验证",
+                    li_profile_verification_1: "<strong>尽职调查：</strong> 在收到借款人的资料和请求后，保险人负责进行尽职调查，验证借款人的身份并评估风险。",
+                    li_profile_verification_2: "<strong>资料查看：</strong> 保险人可以与平台互动，查看借款人的加密资料，并选择联系借款人或批准贷款报价。",
+                    li_profile_verification_3: "<strong>公开资料：</strong> 保险人必须设置他们的公开资料，其中可以包括联系信息、社交网络或区块链地址（BTC, ETH, TRX）。这建立了与借款人和出借人的信任。",
+                    subsection_loan_offer: "贷款报价",
+                    li_loan_offer_1: "保险人向借款人提交贷款报价（金额、利率、条款等），然后将其存储在链上作为提案。",
+                    li_loan_offer_2: "<strong>接受：</strong> 一旦借款人接受报价，交易的状态将会在网站上跟踪。这包括金额、条款和任何相关标签（例如，Tura代币、利率）。",
+                    subsection_blacklisting_mechanism: "黑名单机制",
+                    li_blacklisting_1: "保险人可以在任何时候与合约互动，以检查贷款是否违约或已被标记为“超额”（意味着未满足还款条件）。",
+                    li_blacklisting_2: "<strong>触发黑名单：</strong> 如果保险人确定借款人已违约，他们可以通过合约函数触发黑名单流程。",
+                    li_blacklisting_3: "<strong>黑名单：</strong> 借款人的以前资料（与贷款相关的资料）可能会被公开在一个黑名单上，任何有权限访问平台的人都可以访问，从而警告其他参与者（借款人、保险人、出借人）关于风险。",
+                    section_staker_interaction: "3. 出借人互动",
+                    subsection_viewing_deals: "查看交易",
+                    li_viewing_deals_1: "出借人能够看到所有由保险人支持的贷款交易。这包括贷款金额、利率和条款等详细信息。",
+                    li_viewing_deals_2: "<strong>全额出借：</strong> 出借人可以决定全额出借贷款金额，一旦交易确认，资金将被转移到借款人的地址。",
+                    li_viewing_deals_3: "<strong>交易ID：</strong> 一旦出借人完成出借，交易的唯一ID将被发送给借款人、保险人和出借人以供跟踪。",
+                    subsection_payment_handling: "支付处理",
+                    li_payment_handling_1: "<strong>借款人支付：</strong> 借款人需要每月支付还款。他们可以从任何钱包地址支付，但必须在支付交易中包含贷款ID。这个ID将帮助智能合约正确跟踪和分配资金。",
+                    li_payment_handling_2: "<strong>分配：</strong> 智能合约将处理还款的分配，确保资金根据出借人在贷款中的出借份额正确分配给保险人和出借人。",
+                    section_smart_contract_design: "4. 智能合约设计",
+                    subsection_profile_data_management: "资料数据管理",
+                    li_profile_data_management_1: "智能合约应具备允许存储元数据的函数，如借款人的资料、贷款详情和资料的版本历史。",
+                    li_profile_data_management_2: "<strong>安全资料处理：</strong> 为防止篡改，合约应与链下存储提供商（如IPFS）互动，存储加密的JSON资料。合约应仅存储资料数据的哈希值，以确保其未被更改。",
+                    subsection_loan_contract: "贷款合约",
+                    li_loan_contract_1: "<strong>状态管理：</strong> 合约必须跟踪贷款的状态，无论是待定、活跃还是完成。",
+                    li_loan_contract_2: "<strong>报价管理：</strong> 它应允许保险人提交贷款报价，并允许借款人接受这些报价。一旦接受，合约可以通过将资金转移到借款人的地址来启动交易。",
+                    li_loan_contract_3: "<strong>支付跟踪：</strong> 合约需要跟踪贷款还款。每笔还款应包括交易ID和还款金额，确保其正确归属到借款人的贷款。",
+                    li_loan_contract_4: "<strong>黑名单触发：</strong> 如果保险人检测到违约，他们应能够与合约互动以触发黑名单操作，将借款人的资料标记为黑名单的一部分。",
+                    subsection_security: "安全性",
+                    li_security_1: "<strong>访问控制：</strong> 只有授权用户（借款人、保险人和出借人）才能访问某些功能，如查看敏感数据或与智能合约互动进行支付或黑名单处理。",
+                    li_security_2: "<strong>审计：</strong> 为防止任何漏洞，智能合约在发布前应经过彻底审计。",
+                    section_platform_interaction: "5. 平台互动",
+                    subsection_ui_ux: "用户界面/用户体验",
+                    li_ui_ux_1: "网站需要为用户提供便捷的互动平台。借款人应能够轻松更新他们的资料、申请保险人、查看报价和管理他们的贷款。保险人应能够与平台互动，审查资料、批准或拒绝申请、提出报价和跟踪交易。出借人应能够查看贷款交易并投资资金。",
+                    li_ui_ux_2: "<strong>通知：</strong> 当资料、贷款报价、申请或还款有更新时，用户应收到通知。可以将实时通知系统集成到平台中。",
+                    implementation_summary_title: "Implementation Summary:",
+                    li_implementation_1: "<strong>Profile Updates:</strong> Borrowers can update their profiles, with versioning, while keeping old profiles for potential blacklisting.",
+                    li_implementation_2: "<strong>Loan Offers:</strong> Insurers submit loan offers, borrowers can accept or reject them, and create counter offers. The deals are tracked on the platform.",
+                    li_implementation_3: "<strong>Staking:</strong> Stakers can stake funds for deals, with transparency and deal tracking via deal IDs.",
+                    li_implementation_4: "<strong>Payments:</strong> Borrowers make monthly payments, tracked and distributed by the contract.",
+                    li_implementation_5: "<strong>Blacklisting:</strong> Insurers can trigger blacklisting based on loan default, with the borrower’s information exposed on a public blacklist.",
+                    li_implementation_6: "<strong>Smart Contract:</strong> A robust contract manages the entire process (profile management, loan tracking, payments, blacklisting).",
+                    footer_text: "&copy; 2024 Tagfusion Loan on Tura. All rights reserved.",
+                },
+            };
+            
+            // Current Language
+            let currentLanguage = 'en';
+            
+            // Function to translate the page
+            function translatePage(language) {
+                currentLanguage = language;
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[language] && translations[language][key]) {
+                        element.innerHTML = translations[language][key];
+                    }
+                });
+                // Update dynamically added content
+                translateDynamicContent();
+            }
+            
+            // Initialize page with default language
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initialize sample data
+                initializeSampleData();
+                translatePage(currentLanguage);
+            });
+            
+            // Handle language selection
+            document.getElementById('language-select').addEventListener('change', function() {
+                translatePage(this.value);
+            });
+            
+            // Sample Data
+            const sampleInsurers = [
+                { id: 1, name: "InsureMax", email: "contact@insuremax.com", company: "InsureMax Inc.", address: "123 Insurance St., Cityville", twitter: "@InsureMax" },
+                { id: 2, name: "SecureLife", email: "info@securelife.com", company: "SecureLife LLC", address: "456 Protection Ave., Townsville", twitter: "@SecureLife" },
+                { id: 3, name: "TrustGuard", email: "support@trustguard.com", company: "TrustGuard Ltd.", address: "789 Safety Blvd., Villageville", twitter: "@TrustGuard" }
+            ];
+            
+            const sampleLenders = [
+                { id: 1, name: "LenderOne", email: "lender1@example.com", bank: "Bank A", address: "321 Finance Rd., Moneytown", credits: getRandomCredits() },
+                { id: 2, name: "LenderTwo", email: "lender2@example.com", bank: "Bank B", address: "654 Investment Ln., Wealthcity", credits: getRandomCredits() },
+                { id: 3, name: "LenderThree", email: "lender3@example.com", bank: "Bank C", address: "987 Savings St., Prosperville", credits: getRandomCredits() }
+            ];
+            
+            function getRandomCredits() {
+                return Math.floor(Math.random() * 151) + 50; // Random number between 50 and 200
+            }
+            
+            function getRandomCreditScore() {
+                return Math.floor(Math.random() * 151) + 50; // Random number between 50 and 200
+            }
+            
+            // Loan Offers from Insurers
+            let loanOffers = [
+                {
+                    id: 1,
+                    insurerId: 1,
+                    borrowerId: null,
+                    amount: 500000,
+                    term: 12,
+                    repayment: "installment",
+                    interestRate: 15,
+                    status: "available" // available, applied, approved, active, invested, rejected
+                },
+                {
+                    id: 2,
+                    insurerId: 2,
+                    borrowerId: null,
+                    amount: 300000,
+                    term: 12,
+                    repayment: "installment",
+                    interestRate: 15,
+                    status: "available"
+                },
+                {
+                    id: 3,
+                    insurerId: 3,
+                    borrowerId: null,
+                    amount: 400000,
+                    term: 12,
+                    repayment: "installment",
+                    interestRate: 15,
+                    status: "available"
+                }
+            ];
+            
+            // Borrower Applications
+            let borrowerApplications = [];
+            
+            // User Data
+            let currentUser = {
+                role: null,
+                profile: {}
+            };
+            
+            // Function to show notifications
+            function showNotification(message, isError = false) {
+                const notification = document.getElementById('notification');
+                notification.innerHTML = message;
+                if (isError) {
+                    notification.classList.add('error');
+                } else {
+                    notification.classList.remove('error');
+                }
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Function to handle role button clicks
+            function handleRoleClick(event) {
+                const role = event.target.getAttribute('data-role');
+                if (!role) return;
+            
+                // Hide all profile setup sections
+                document.querySelectorAll('.profile-setup').forEach(section => {
+                    section.classList.remove('active');
+                });
+            
+                // Show the selected role's profile setup section
+                const section = document.getElementById(`${role}-setup`);
+                if (section) {
+                    section.classList.add('active');
+                    console.log(`Selected role: ${role}`);
+                }
+            }
+            
+            // Add event listeners to role buttons
+            document.querySelectorAll('.role-button').forEach(button => {
+                button.addEventListener('click', handleRoleClick);
+            });
+            
+            // Function to navigate to management page
+            function navigateToManagement() {
+                // Hide profile setup sections
+                document.querySelectorAll('.profile-setup').forEach(section => {
+                    section.classList.remove('active');
+                });
+            
+                // Show management page
+                const managementPage = document.getElementById('management-page');
+                managementPage.classList.add('active');
+            
+                // Populate management page based on role
+                if (currentUser.role === 'borrower') {
+                    populateBorrowerDashboard();
+                } else if (currentUser.role === 'insurer') {
+                    populateInsurerDashboard();
+                } else if (currentUser.role === 'lender') {
+                    populateLenderDashboard();
+                }
+            }
+            
+            // Function to populate borrower dashboard
+            function populateBorrowerDashboard() {
+                // Show applied insurers
+                const appliedInsurersList = document.getElementById('borrower-applied-insurers');
+                appliedInsurersList.innerHTML = '';
+            
+                // Ensure there are 3 sample applications
+                while (borrowerApplications.filter(app => app.borrower.email === currentUser.profile.email).length < 3) {
+                    const randomInsurer = sampleInsurers[Math.floor(Math.random() * sampleInsurers.length)];
+                    borrowerApplications.push({
+                        id: borrowerApplications.length + 1,
+                        borrower: {
+                            name: currentUser.profile.name,
+                            email: currentUser.profile.email,
+                            id: currentUser.profile.id,
+                            address: currentUser.profile.address,
+                            creditScore: currentUser.profile.creditScore
+                        },
+                        insurerId: randomInsurer.id,
+                        status: "applied" // applied, approved, rejected, active
+                    });
+                }
+            
+                const borrowerApps = borrowerApplications.filter(app => app.borrower.email === currentUser.profile.email && app.status === "applied");
+            
+                borrowerApps.slice(0,3).forEach(app => {
+                    const insurer = sampleInsurers.find(i => i.id === app.insurerId);
+                    if (insurer) {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('sample-item');
+                        listItem.innerHTML = `
+                            <h4>${insurer.name}</h4>
+                            <p><strong>Company:</strong> ${insurer.company}</p>
+                            <p><strong>Email:</strong> ${insurer.email}</p>
+                            <p><strong>Twitter:</strong> ${insurer.twitter}</p>
+                        `;
+                        appliedInsurersList.appendChild(listItem);
+                    }
+                });
+            
+                // Show received offers
+                const receivedOffersList = document.getElementById('borrower-received-offers');
+                receivedOffersList.innerHTML = '';
+            
+                // Assign 3 random approved offers to the borrower
+                const approvedOffers = loanOffers.filter(offer => offer.status === "approved" && !offer.borrowerId);
+            
+                while (approvedOffers.length < 3 && loanOffers.length < 10) { // prevent infinite loop
+                    const randomInsurer = sampleInsurers[Math.floor(Math.random() * sampleInsurers.length)];
+                    const newOffer = {
+                        id: loanOffers.length + 1,
+                        insurerId: randomInsurer.id,
+                        borrowerId: currentUser.profile.id,
+                        amount: 200000 + Math.floor(Math.random() * 300000), // Random amount between 200k and 500k
+                        term: 12, // 12 months
+                        repayment: "installment",
+                        interestRate: 15, // Total 15%, 5% for insurer, 10% for lenders
+                        status: "approved" // approved, active
+                    };
+                    loanOffers.push(newOffer);
+                }
+            
+                const borrowerOffers = loanOffers.filter(offer => offer.borrowerId === currentUser.profile.id && offer.status === "approved");
+            
+                borrowerOffers.slice(0,3).forEach(offer => {
+                    const insurer = sampleInsurers.find(i => i.id === offer.insurerId);
+                    if (insurer) {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('sample-item');
+                        listItem.innerHTML = `
+                            <h4>${insurer.name}</h4>
+                            <p><strong>Loan Amount:</strong> ${offer.amount} USDT</p>
+                            <p><strong>Loan Term:</strong> ${offer.term} Months</p>
+                            <p><strong>Interest Rate:</strong> ${offer.interestRate}%</p>
+                            <button onclick="acceptOffer(${offer.id})">Accept Offer</button>
+                            <button onclick="rejectOffer(${offer.id})">Reject Offer</button>
+                        `;
+                        receivedOffersList.appendChild(listItem);
+                    }
+                });
+            
+                if (borrowerOffers.length === 0) {
+                    const noOffers = document.createElement('p');
+                    noOffers.textContent = "No offers received yet.";
+                    receivedOffersList.appendChild(noOffers);
+                }
+            
+                // Generate Repayment Schedule if any active loan exists
+                generateRepaymentSchedule();
+            }
+            
+            // Function to generate repayment schedule
+            function generateRepaymentSchedule() {
+                const tableBody = document.getElementById('repayment-table-body');
+                tableBody.innerHTML = '';
+            
+                const activeLoan = loanOffers.find(o => o.borrowerId === currentUser.profile.id && o.status === "active");
+                if (!activeLoan) return;
+            
+                const principal = activeLoan.amount;
+                const term = activeLoan.term;
+                const totalInterest = principal * 0.15; // 15% total interest
+                const monthlyInterest = totalInterest / term; // 1.25% per month
+                const monthlyPayment = (principal + totalInterest) / term;
+                let remainingBalance = principal + totalInterest;
+            
+                for (let month = 1; month <= term; month++) {
+                    const payment = monthlyPayment.toFixed(2);
+                    remainingBalance -= monthlyPayment;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${month}</td>
+                        <td>${payment}</td>
+                        <td>${remainingBalance.toFixed(2)}</td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            }
+            
+            // Function to accept an offer (Borrower)
+            function acceptOffer(offerId) {
+                const offer = loanOffers.find(o => o.id === offerId && o.status === "approved" && o.borrowerId === currentUser.profile.id);
+                if (offer) {
+                    offer.status = "active";
+                    showNotification("Offer accepted successfully!");
+                    populateBorrowerDashboard();
+                } else {
+                    showNotification('Offer not found or already accepted.', true);
+                }
+            }
+            
+            // Function to reject an offer (Borrower)
+            function rejectOffer(offerId) {
+                if (confirm("Are you sure you want to reject this offer?")) {
+                    const offer = loanOffers.find(o => o.id === offerId && o.status === "approved" && o.borrowerId === currentUser.profile.id);
+                    if (offer) {
+                        offer.status = "rejected";
+                        showNotification("Offer rejected successfully!");
+                        populateBorrowerDashboard();
+                    } else {
+                        showNotification('Offer not found or already rejected.', true);
+                    }
+                }
+            }
+            
+            // Function to populate insurer dashboard
+            function populateInsurerDashboard() {
+                // Show borrower applications
+                const applicationsList = document.getElementById('insurer-applications');
+                applicationsList.innerHTML = '';
+            
+                // Get applications assigned to this insurer
+                const assignedApplications = borrowerApplications.filter(app => app.insurerId === currentUser.profile.id && app.status === "applied");
+            
+                // Ensure there are 3 sample applications
+                while (assignedApplications.length < 3 && borrowerApplications.length < 20) { // prevent infinite loop
+                    const randomBorrower = {
+                        name: `Borrower${Math.floor(Math.random() * 1000)}`,
+                        email: `borrower${Math.floor(Math.random() * 1000)}@example.com`,
+                        id: `ID${Math.floor(Math.random() * 100000)}`,
+                        address: `Address ${Math.floor(Math.random() * 1000)}`,
+                        creditScore: getRandomCreditScore()
+                    };
+                    borrowerApplications.push({
+                        id: borrowerApplications.length + 1,
+                        borrower: randomBorrower,
+                        insurerId: currentUser.profile.id,
+                        status: "applied" // applied, approved, rejected, active
+                    });
+                }
+            
+                const updatedApplications = borrowerApplications.filter(app => app.insurerId === currentUser.profile.id && app.status === "applied");
+            
+                updatedApplications.slice(0,3).forEach(app => {
+                    const borrower = app.borrower;
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('sample-item');
+                    listItem.innerHTML = `
+                        <h4>${borrower.name}</h4>
+                        <p><strong>Email:</strong> ${borrower.email}</p>
+                        <p><strong>Government ID:</strong> ${borrower.id}</p>
+                        <p><strong>Address:</strong> ${borrower.address}</p>
+                        <p><strong>Credit Score:</strong> ${borrower.creditScore}</p>
+                        <div class="buttons">
+                            <button onclick="approveApplication(${app.id})">Approve</button>
+                            <button class="reject" onclick="rejectApplication(${app.id})">Reject</button>
+                        </div>
+                    `;
+                    applicationsList.appendChild(listItem);
+                });
+            
+                // Show insurer's offers
+                const insurerOffersList = document.getElementById('insurer-offers-list');
+                insurerOffersList.innerHTML = '';
+            
+                // Get offers created by this insurer
+                const createdOffers = loanOffers.filter(offer => offer.insurerId === currentUser.profile.id && offer.status === "approved");
+            
+                // Ensure there are 3 sample offers
+                while (createdOffers.length < 3 && loanOffers.length < 30) { // prevent infinite loop
+                    const randomBorrowerApp = borrowerApplications.find(app => app.insurerId === currentUser.profile.id && app.status === "approved");
+                    if (randomBorrowerApp) {
+                        const newOffer = {
+                            id: loanOffers.length + 1,
+                            insurerId: currentUser.profile.id,
+                            borrowerId: randomBorrowerApp.id,
+                            amount: 200000 + Math.floor(Math.random() * 300000), // Random amount between 200k and 500k
+                            term: 12, // 12 months
+                            repayment: "installment",
+                            interestRate: 15, // Total 15%, 5% for insurer, 10% for lenders
+                            status: "approved"
+                        };
+                        loanOffers.push(newOffer);
+                    } else {
+                        break;
+                    }
+                }
+            
+                const updatedCreatedOffers = loanOffers.filter(offer => offer.insurerId === currentUser.profile.id && offer.status === "approved");
+            
+                updatedCreatedOffers.slice(0,3).forEach(offer => {
+                    const borrowerApp = borrowerApplications.find(app => app.id === offer.borrowerId);
+                    const borrower = borrowerApp ? borrowerApp.borrower : { name: "Unknown" };
+                    const listItem = document.createElement('li');
+                    listItem.classList.add('sample-item');
+                    listItem.innerHTML = `
+                        <h4>Loan to ${borrower.name}</h4>
+                        <p><strong>Loan Amount:</strong> ${offer.amount} USDT</p>
+                        <p><strong>Loan Term:</strong> ${offer.term} Months</p>
+                        <p><strong>Interest Rate:</strong> ${offer.interestRate}%</p>
+                        <button onclick="createCounterOffer(${offer.id})">Create Counter Offer</button>
+                    `;
+                    insurerOffersList.appendChild(listItem);
+                });
+            }
+            
+            // Function to approve borrower application (Insurer)
+            function approveApplication(applicationId) {
+                const application = borrowerApplications.find(app => app.id === applicationId && app.status === "applied");
+                if (application) {
+                    // Update application status
+                    application.status = "approved";
+            
+                    // Create a loan offer for this application
+                    const newOffer = {
+                        id: loanOffers.length + 1,
+                        insurerId: application.insurerId,
+                        borrowerId: application.borrower.id,
+                        amount: 300000, // Example amount
+                        term: 12, // 12 months
+                        repayment: "installment",
+                        interestRate: 15, // Total 15%, 5% for insurer, 10% for lenders
+                        status: "approved" // approved, active
+                    };
+                    loanOffers.push(newOffer);
+            
+                    showNotification("Application approved and loan offer created successfully!");
+                    populateInsurerDashboard();
+                } else {
+                    showNotification('Application not found.', true);
+                }
+            }
+            
+            // Function to reject borrower application (Insurer)
+            function rejectApplication(applicationId) {
+                const application = borrowerApplications.find(app => app.id === applicationId && app.status === "applied");
+                if (application) {
+                    // Update application status
+                    application.status = "rejected";
+            
+                    showNotification("Application rejected successfully!");
+                    populateInsurerDashboard();
+                } else {
+                    showNotification('Application not found.', true);
+                }
+            }
+            
+            // Function to create a counter offer (Insurer)
+            function createCounterOffer(offerId) {
+                const offer = loanOffers.find(o => o.id === offerId && o.status === "approved");
+                if (offer) {
+                    // Prompt insurer to input offer details
+                    const amount = prompt("Enter Loan Amount (USDT):", offer.amount);
+                    if (amount === null) return; // Cancelled
+            
+                    const term = prompt("Enter Loan Term (Months):", offer.term);
+                    if (term === null) return; // Cancelled
+            
+                    const interestRate = prompt("Enter Annual Interest Rate (%):", offer.interestRate);
+                    if (interestRate === null) return; // Cancelled
+            
+                    // Validate inputs
+                    if (isNaN(amount) || isNaN(term) || isNaN(interestRate)) {
+                        showNotification('Invalid input. Please enter numeric values.', true);
+                        return;
+                    }
+            
+                    // Update the offer with new details
+                    offer.amount = parseInt(amount);
+                    offer.term = parseInt(term);
+                    offer.interestRate = parseFloat(interestRate);
+            
+                    showNotification('Counter offer created successfully!');
+                    populateInsurerDashboard();
+                } else {
+                    showNotification('Offer not found.', true);
+                }
+            }
+            
+            // Function to populate lender dashboard
+            function populateLenderDashboard() {
+                const loansList = document.getElementById('available-loans');
+                loansList.innerHTML = '';
+            
+                // Get available loans (approved or active)
+                const availableLoans = loanOffers.filter(offer => offer.status === "approved" || offer.status === "active");
+            
+                // Ensure there are 3 sample loans
+                while (availableLoans.length < 3 && loanOffers.length < 30) { // prevent infinite loop
+                    const randomInsurer = sampleInsurers[Math.floor(Math.random() * sampleInsurers.length)];
+                    const randomBorrowerApp = borrowerApplications.find(app => app.insurerId === randomInsurer.id && app.status === "approved");
+                    if (randomBorrowerApp) {
+                        const newOffer = {
+                            id: loanOffers.length + 1,
+                            insurerId: randomInsurer.id,
+                            borrowerId: randomBorrowerApp.borrower.id,
+                            amount: 200000 + Math.floor(Math.random() * 300000), // Random amount between 200k and 500k
+                            term: 12, // 12 months
+                            repayment: "installment",
+                            interestRate: 15, // Total 15%, 5% for insurer, 10% for lenders
+                            status: "approved"
+                        };
+                        loanOffers.push(newOffer);
+                    } else {
+                        break;
+                    }
+                }
+            
+                const updatedAvailableLoans = loanOffers.filter(offer => offer.status === "approved" || offer.status === "active");
+            
+                updatedAvailableLoans.slice(0,3).forEach(offer => {
+                    const insurer = sampleInsurers.find(i => i.id === offer.insurerId);
+                    const borrower = borrowerApplications.find(app => app.borrower.id === offer.borrowerId)?.borrower;
+                    if (insurer && borrower) {
+                        const listItem = document.createElement('li');
+                        listItem.classList.add('sample-item');
+                        listItem.innerHTML = `
+                            <h4>${insurer.name} - ${offer.amount} USDT</h4>
+                            <p><strong>Borrower:</strong> ${borrower.name}</p>
+                            <p><strong>Loan Term:</strong> ${offer.term} Months</p>
+                            <p><strong>Interest Rate:</strong> ${offer.interestRate}%</p>
+                            <button onclick="investInLoan(${offer.id})">Invest</button>
+                        `;
+                        loansList.appendChild(listItem);
+                    }
+                });
+            
+                if (updatedAvailableLoans.length === 0) {
+                    const noLoans = document.createElement('p');
+                    noLoans.textContent = "No available loans to invest.";
+                    loansList.appendChild(noLoans);
+                }
+            }
+            
+            // Function to invest in a loan (Lender)
+            function investInLoan(offerId) {
+                const offer = loanOffers.find(o => o.id === offerId && (o.status === "approved" || o.status === "active"));
+                if (offer) {
+                    const investmentAmount = prompt("Enter Investment Amount (USDT):", "1000");
+                    if (investmentAmount === null) return; // Cancelled
+            
+                    if (isNaN(investmentAmount) || investmentAmount <= 0 || investmentAmount > offer.amount) {
+                        showNotification('Invalid investment amount.', true);
+                        return;
+                    }
+            
+                    // Deduct the invested amount from the offer
+                    offer.amount -= parseInt(investmentAmount);
+            
+                    // Update offer status if fully invested
+                    if (offer.amount === 0) {
+                        offer.status = "invested";
+                    }
+            
+                    showNotification('Invested successfully!');
+                    populateLenderDashboard();
+                } else {
+                    showNotification('Loan not found or already invested.', true);
+                }
+            }
+            
+            // Function to handle form submissions
+            function handleFormSubmission(role) {
+                return function(event) {
+                    event.preventDefault();
+                    let formData = {};
+                    if (role === 'borrower') {
+                        formData.name = document.getElementById('borrower-name').value;
+                        formData.email = document.getElementById('borrower-email').value;
+                        formData.id = document.getElementById('borrower-id').value;
+                        formData.address = document.getElementById('borrower-address').value;
+                        formData.creditScore = getRandomCreditScore();
+                    } else if (role === 'lender') {
+                        formData.name = document.getElementById('lender-name').value;
+                        formData.email = document.getElementById('lender-email').value;
+                        formData.bank = document.getElementById('lender-bank').value;
+                        formData.address = document.getElementById('lender-address').value;
+                        formData.credits = getRandomCredits();
+                    } else if (role === 'insurer') {
+                        formData.name = document.getElementById('insurer-name').value;
+                        formData.email = document.getElementById('insurer-email').value;
+                        formData.company = document.getElementById('insurer-company').value;
+                        formData.twitter = document.getElementById('insurer-twitter').value;
+                        formData.address = document.getElementById('insurer-address').value;
+                    }
+            
+                    // Store user data
+                    currentUser.role = role;
+                    currentUser.profile = formData;
+            
+                    // Add borrower applications if role is borrower
+                    if (role === 'borrower') {
+                        borrowerApplications.push({
+                            id: borrowerApplications.length + 1,
+                            borrower: {
+                                name: formData.name,
+                                email: formData.email,
+                                id: formData.id,
+                                address: formData.address,
+                                creditScore: formData.creditScore
+                            },
+                            insurerId: null, // to be assigned upon application
+                            status: "applied" // applied, approved, rejected, active
+                        });
+                    }
+            
+                    // Show success notification
+                    let successMessage = '';
+                    if (role === 'borrower') {
+                        successMessage = 'Borrower profile submitted successfully!';
+                    } else if (role === 'lender') {
+                        successMessage = 'Lender profile submitted successfully!';
+                    } else if (role === 'insurer') {
+                        successMessage = 'Insurer profile submitted successfully!';
+                    }
+                    showNotification(successMessage);
+            
+                    // Navigate to management page after a short delay
+                    setTimeout(() => {
+                        navigateToManagement();
+                    }, 1000);
+            
+                    // Log the data (for debugging)
+                    console.log({ role, formData });
+                };
+            }
+            
+            // Function to translate management sections dynamically
+            function translateDynamicContent() {
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (translations[currentLanguage] && translations[currentLanguage][key]) {
+                        element.innerHTML = translations[currentLanguage][key];
+                    }
+                });
+            }
+            
+            // Add form submission handlers
+            document.getElementById('borrower-form').addEventListener('submit', handleFormSubmission('borrower'));
+            document.getElementById('lender-form').addEventListener('submit', handleFormSubmission('lender'));
+            document.getElementById('insurer-form').addEventListener('submit', handleFormSubmission('insurer'));
+            
+            // Function to initialize sample data
+            function initializeSampleData() {
+                // Ensure there are 3 sample loan offers
+                while (loanOffers.length < 3) {
+                    const randomInsurer = sampleInsurers[Math.floor(Math.random() * sampleInsurers.length)];
+                    loanOffers.push({
+                        id: loanOffers.length + 1,
+                        insurerId: randomInsurer.id,
+                        borrowerId: null,
+                        amount: 500000 + Math.floor(Math.random() * 500000), // Random between 500k and 1M
+                        term: 12, // 12 months
+                        repayment: "installment",
+                        interestRate: 15, // Total 15%, 5% for insurer, 10% for lenders
+                        status: "available" // available, applied, approved, active, invested, rejected
+                    });
+                }
+            }
+            
+        </script>
+</body>
+
+</html>
